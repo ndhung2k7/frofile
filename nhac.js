@@ -1,3 +1,4 @@
+
 // Inject HTML
 document.addEventListener('DOMContentLoaded', () => {
   const html = `
@@ -48,75 +49,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* POPUP */
-    @property --border-angle-1 {
-      syntax: "<angle>"; inherits: true; initial-value: 0deg;
-    }
-    @property --border-angle-2 {
-      syntax: "<angle>"; inherits: true; initial-value: 90deg;
-    }
-    @property --border-angle-3 {
-      syntax: "<angle>"; inherits: true; initial-value: 180deg;
-    }
-    :root {
-      --bright-blue: rgb(0, 100, 255);
-      --bright-green: rgb(0, 255, 0);
-      --bright-red: rgb(255, 0, 0);
-      --background: black;
-      --foreground: white;
-      --border-size: 2px;
-      --border-radius: 0.75em;
-    }
-    @keyframes rotateBackground {
-      to { --border-angle-1: 360deg; }
-    }
-    @keyframes rotateBackground2 {
-      to { --border-angle-2: -270deg; }
-    }
-    @keyframes rotateBackground3 {
-      to { --border-angle-3: 540deg; }
-    }
     .popup {
-      position: fixed; top: 20px; left: 50%;
-      transform: scale(0.5); z-index: 1000;
-      opacity: 0; pointer-events: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.5);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
       transition: transform 0.5s ease, opacity 0.5s ease;
-      transform-origin: center center;
+      transform-origin: center top;
+      max-width: 90vw;
     }
-    .popup.show { transform: scale(1); opacity: 1; }
-    .popup.hide { transform: scale(0.5); opacity: 0; }
+    .popup.show {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+    }
+    .popup.hide {
+      transform: translateX(-50%) scale(0.5);
+      opacity: 0;
+    }
     .popup.gradient-border {
-      --border-angle-1: 0deg;
-      --border-angle-2: 90deg;
-      --border-angle-3: 180deg;
-      padding: var(--border-size);
-      background-image: conic-gradient(
-          from var(--border-angle-1) at 10% 15%,
-          transparent, var(--bright-blue) 10%, transparent 30%, transparent
-        ),
-        conic-gradient(
-          from var(--border-angle-2) at 70% 60%,
-          transparent, var(--bright-green) 10%, transparent 60%, transparent
-        ),
-        conic-gradient(
-          from var(--border-angle-3) at 50% 20%,
-          transparent, var(--bright-red) 10%, transparent 50%, transparent
-        );
-      animation:
-        rotateBackground 3s linear infinite,
-        rotateBackground2 8s linear infinite,
-        rotateBackground3 13s linear infinite;
-      border-radius: var(--border-radius);
+      padding: 2px;
+      background: linear-gradient(135deg, #00f, #0f0, #f00);
+      border-radius: 12px;
     }
     .popup-inner {
-      background: var(--background); padding: 12px 24px;
-      border-radius: calc(var(--border-radius) - var(--border-size));
-      color: var(--foreground); font-size: 16px; font-weight: bold;
+      background: black;
+      padding: 10px 18px;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
       white-space: nowrap;
+      text-align: center;
+    }
+    @media (max-width: 480px) {
+      .popup-inner {
+        font-size: 14px;
+        padding: 8px 14px;
+      }
     }
   `;
   document.head.appendChild(style);
 
-  // Logic
+  // Nhạc
   const songs = [
     { name: "Bài hát 1", file: "https://files.catbox.moe/22en11.mp3" },
     { name: "Bài hát 2", file: "song2.mp3" },
@@ -135,7 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     currentAudio = new Audio(song.file);
-    currentAudio.play();
+    currentAudio.play().catch(err => {
+      console.warn("Không thể phát nhạc tự động:", err);
+    });
 
     const popup = document.getElementById('popupNotification');
     const popupInner = popup.querySelector('.popup-inner');
@@ -152,16 +131,20 @@ document.addEventListener('DOMContentLoaded', () => {
     currentAudio.addEventListener('ended', playRandomSong);
   }
 
-  const allowBtn = document.querySelector('.toast-accept');
-  const declineBtn = document.querySelector('.toast-decline');
-  const toast = document.getElementById('toast-prompt');
+  // Gán sự kiện sau khi DOM toast đã tồn tại
+  setTimeout(() => {
+    const allowBtn = document.querySelector('.toast-accept');
+    const declineBtn = document.querySelector('.toast-decline');
+    const toast = document.getElementById('toast-prompt');
 
-  allowBtn.addEventListener('click', () => {
-    toast.remove();
-    playRandomSong();
-  });
+    allowBtn?.addEventListener('click', () => {
+      toast.remove();
+      playRandomSong();
+    });
 
-  declineBtn.addEventListener('click', () => {
-    toast.remove();
-  });
+    declineBtn?.addEventListener('click', () => {
+      toast.remove();
+    });
+  }, 100);
 });
+
