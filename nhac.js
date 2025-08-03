@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
       margin-bottom: 16px;
     }
 
-    /* Trên màn hình lớn: không cho xuống dòng */
     @media (min-width: 768px) {
       .toast-question {
         white-space: nowrap;
@@ -108,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
   document.head.appendChild(style);
 
-  // Danh sách bài nhạc
+  // Danh sách nhạc
   const songs = [
     { name: "Bài hát 1", file: "https://files.catbox.moe/22en11.mp3" },
     { name: "Bài hát 2", file: "song2.mp3" },
@@ -116,9 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   let currentAudio = null;
+  let lastPlayedIndex = -1;
 
   function playRandomSong() {
-    const randomIndex = Math.floor(Math.random() * songs.length);
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * songs.length);
+    } while (randomIndex === lastPlayedIndex && songs.length > 1);
+
+    lastPlayedIndex = randomIndex;
     const song = songs[randomIndex];
 
     if (currentAudio) {
@@ -146,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentAudio.addEventListener('ended', playRandomSong);
   }
 
-  // Gán sự kiện sau khi phần tử đã được inject
+  // Gán sự kiện khi toast đã hiển thị xong
   setTimeout(() => {
     const allowBtn = document.querySelector('.toast-accept');
     const declineBtn = document.querySelector('.toast-decline');
@@ -162,4 +167,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, 100);
 });
-
