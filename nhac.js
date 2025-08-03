@@ -31,7 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
       font-family: sans-serif;
     }
     .toast-icon img { width: 40px; height: 40px; margin-bottom: 12px; }
-    .toast-question { font-size: 17px; font-weight: 500; margin-bottom: 16px; }
+
+    .toast-question {
+      font-size: 17px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    /* Trên màn hình lớn: không cho xuống dòng */
+    @media (min-width: 768px) {
+      .toast-question {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
     .toast-decline {
       background: transparent; color: #aaa; font-size: 14px; border: none;
       margin-bottom: 14px; cursor: pointer; transition: color 0.3s;
@@ -93,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
   document.head.appendChild(style);
 
-  // Nhạc
+  // Danh sách bài nhạc
   const songs = [
     { name: "Bài hát 1", file: "https://files.catbox.moe/22en11.mp3" },
     { name: "Bài hát 2", file: "song2.mp3" },
@@ -131,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentAudio.addEventListener('ended', playRandomSong);
   }
 
-  // Gán sự kiện sau khi DOM toast đã tồn tại
+  // Gán sự kiện sau khi phần tử đã được inject
   setTimeout(() => {
     const allowBtn = document.querySelector('.toast-accept');
     const declineBtn = document.querySelector('.toast-decline');
