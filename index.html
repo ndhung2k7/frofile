@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>ThanhDieu Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Loading overlay */
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      background: black;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+
+    #loadingScreen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-bar {
+      width: 200px;
+      height: 6px;
+      background: #444;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .loader-progress {
+      width: 0%;
+      height: 100%;
+      background: red;
+      animation: loadProgress 3s forwards;
+    }
+
+    @keyframes loadProgress {
+      to { width: 100%; }
+    }
+
+    .avatar-loading {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .name-loading {
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .quote-loading {
+      color: #ccc;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Loading screen -->
+<div id="loadingScreen">
+  <div class="loader-bar">
+    <div class="loader-progress"></div>
+  </div>
+  <div class="profile-info">
+    <img src="avatar.jpg" class="avatar-loading" />
+    <div class="name-loading">Vương Thanh Diệu</div>
+    <div class="quote-loading">Onichan~ sao gjjjjjờ này chưa ngủ nữa<br>ʚ(｡•᎑•｡)ɞ</div>
+  </div>
+</div>
+
+<!-- Nội dung chính -->
+<div class="horizontal-container" id="hContainer">
+  <div class="vertical-wrapper" id="vLeft">
+    <div class="section effect1" onclick="goToBio(1)">
+      <video autoplay muted loop playsinline class="bg-video" id="bgVideo1"></video>
+      <img src="avatar.jpg" class="avatar">
+      <div class="name">Thông Tin Cá Nhân</div>
+      <div class="quote" id="quote1">"Câu nói hay đầu tiên..."</div>
+      <div class="arrow">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14m0 0l-6-6m6 6l6-6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="section bio1">
+      <div class="home-header" onclick="goToEffectFromBio(1)">ThanhDieu Home</div>
+      <iframe src="bio/bio1.html"></iframe>
+    </div>
+  </div>
+
+  <div class="vertical-wrapper" id="vRight">
+    <div class="section effect2" onclick="goToBio(2)">
+      <video autoplay muted loop playsinline class="bg-video" id="bgVideo2"></video>
+      <img src="avatar.jpg" class="avatar">
+      <div class="name">Thông Tin Thanh Toán</div>
+      <div class="quote" id="quote2">"Câu nói hay thứ hai..."</div>
+      <div class="arrow">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14m0 0l-6-6m6 6l6-6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="section bio2">
+      <div class="home-header" onclick="goToEffectFromBio(2)">ThanhDieu Home</div>
+      <iframe src="bio2.html"></iframe>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  // Gán video phù hợp thiết bị
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  document.getElementById('bgVideo1').src = isMobile ? "mobile1.mp4" : "pc1.mp4";
+  document.getElementById('bgVideo2').src = isMobile ? "mobile2.mp4" : "pc2.mp4";
+
+  // Ẩn loading sau khi toàn bộ nội dung tải xong
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loadingScreen').classList.add('hidden');
+    }, 300); // Delay nhỏ cho mượt
+  });
+</script>
+
+</body>
+</html>
