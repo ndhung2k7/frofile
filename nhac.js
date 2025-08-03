@@ -1,5 +1,4 @@
 
-// Inject HTML
 document.addEventListener('DOMContentLoaded', () => {
   const html = `
     <div id="toast-prompt" class="toast-modal">
