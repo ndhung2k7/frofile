@@ -88,31 +88,53 @@ setInterval(() => {
     }
   });
 });
+
+// ✅ Loading tối ưu với canplaythrough
 window.addEventListener("load", () => {
   const loader = document.getElementById("loadingScreen");
-  setTimeout(() => {
-    loader.style.opacity = "0";
-    loader.style.transition = "opacity 0.5s ease";
-    setTimeout(() => loader.remove(), 500);
-  }, 4000); // khớp với thời gian animation
-});
-window.addEventListener("load", () => {
-  const videos = [document.getElementById('bgVideo1'), document.getElementById('bgVideo2')];
+  const hContainer = document.getElementById("hContainer");
+  const videos = [
+    document.getElementById("bgVideo1"),
+    document.getElementById("bgVideo2")
+  ];
   let loadedCount = 0;
 
+  function hideLoader() {
+    loader.classList.add("fade-out");
+    setTimeout(() => {
+      loader.style.display = "none";
+      hContainer.classList.add("active");
+    }, 500);
+  }
+
   videos.forEach(video => {
-    video.onloadeddata = () => {
+    video.addEventListener("canplaythrough", () => {
       loadedCount++;
       if (loadedCount === videos.length) {
-        document.getElementById("loadingScreen").style.display = "none";
-        document.getElementById("hContainer").style.display = "flex"; // hoặc block tùy CSS
+        hideLoader();
       }
-    };
+    });
   });
 
-  // Trong trường hợp video không load (lỗi mạng), fallback sau 3s
-  setTimeout(() => {
-    document.getElementById("loadingScreen").style.display = "none";
-    document.getElementById("hContainer").style.display = "flex";
-  }, 3000);
+  // fallback nếu video không load được
+  setTimeout(hideLoader, 3000);
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const loadingScreen = document.getElementById("loadingScreen");
+  const videos = [document.getElementById("bgVideo1"), document.getElementById("bgVideo2")];
+
+  let loaded = false;
+
+  videos.forEach(video => {
+    if (!video) return;
+
+    video.addEventListener("canplaythrough", () => {
+      if (!loaded) {
+        loaded = true;
+        setTimeout(() => {
+          loadingScreen.classList.add("hidden");
+        }, 300); // chờ 1 chút để tránh nháy
+      }
+    });
+  });
 });
