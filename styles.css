@@ -176,11 +176,59 @@ iframe {
 }
 
 .loader-progress {
-  height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, orange, red, white);
-  animation: loadFill 4s ease forwards;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet,
+    red
+  );
+  background-size: 1000% 100%;   /* kéo dài gradient nhiều lần */
+  background-repeat: repeat;     /* cho phép lặp lại */
+  animation: loadProgress 3s forwards linear, rainbow 5s linear infinite;
 }
+
+@keyframes loadProgress {
+  to { width: 100%; }
+}
+
+@keyframes rainbow {
+  0%   { background-position: 0% 0; }
+  100% { background-position: -1000% 0; }
+}
+
+
+@keyframes loadProgress {
+  to { width: 100%; }
+}
+
+@keyframes rainbow {
+  0%   { background-position: 0% 0; }
+  100% { background-position: -300% 0; }
+}
+
+
+@keyframes loadProgress {
+  to { width: 100%; }
+}
+
+@keyframes rainbow {
+  0%   { background-position: 0% 0; }
+  100% { background-position: -200% 0; }
+}
+
+
+@keyframes rainbow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
 
 @keyframes loadFill {
   0% { width: 0%; }
@@ -196,11 +244,27 @@ iframe {
   margin-bottom: 10px;
 }
 
-.name-loading {
-  color: white;
-  font-weight: bold;
-  font-size: 20px;
-  text-align: center;
+.name-container {
+  display: flex;
+  flex-direction: column;   /* sắp xếp theo cột: avatar trên, tên dưới */
+  align-items: center;      /* căn giữa ngang */
+  justify-content: center;  /* căn giữa dọc (nếu cần trong khối cha) */
+}
+.profile-info {
+  display: flex;
+  flex-direction: column;  /* sắp xếp theo cột: avatar trên, tên dưới */
+  align-items: center;     /* căn giữa ngang */
+  justify-content: center; /* căn giữa dọc (nếu profile-info chiếm full màn) */
+}
+
+
+.avatar-loading {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid red;
+  box-shadow: 0 0 10px red;
+  margin-bottom: 10px;  /* khoảng cách với tên */
 }
 
 .quote-loading {
@@ -218,8 +282,4 @@ iframe {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-}
-
-#hContainer {
-  display: none; /* Ẩn hiệu ứng cho tới khi load xong */
 }
